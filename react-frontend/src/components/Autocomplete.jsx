@@ -4,31 +4,34 @@ import { getAutocompleteSuggestionAPI } from "../utils/api";
 import axios from "axios";
 import '../styles/autocomplete.scss'
 
-export function Autocomplete({setSelectedWord}) {
+export function Autocomplete({setSelectedWord,onFormSubmit}) {
 	const [optionsVisibility, setOptionsVisibility] = useState(false);
 	const showOptions=()=>setOptionsVisibility(true);
 	const hideOptions=()=>setOptionsVisibility(false);
 
 	const [inputText, setInputText] = useState('');
-	const [options,setOptions]=useState([]);
+	const [trackInputText, setTrackInputText] = useState('');
 	const [filteredOptions, setFilteredOptions] = useState([]);
 
-	const setInputTextWrapper=(val)=>{
+	const setInputTextWrapper=(newVal)=>{
 		setInputText((prevVal)=>{
-			updateOptionsWrapper(prevVal,val);
-			return val
+			setTrackInputText(prevVal);
+			return newVal;
 		})
 	}
-	const updateOptionsWrapper=(oldInp,newInp)=>{
 
+	const inputLengthMessage=()=> inputText.length>1?<></>:<small>Please enter atleast 2 characters</small>
+	const handleFormSubmit=(e)=>{
+		e.preventDefault();
+		console.log("fomm submit")
+		onFormSubmit(filteredOptions.slice(0,5))
 	}
-	const inputLengthMessage=()=> inputText.length>1?<></>:<small>Please enter atleasr 2 characters</small>
 	const handleWordSelect=(item)=>{
 		setInputText(item);
 		setSelectedWord(item);
 		hideOptions();
 	}
-	const fetchSuggestions=()=>{
+	useEffect(() => {
 		if(inputText<=1) {
 			setFilteredOptions([])
 			return;
@@ -39,14 +42,11 @@ export function Autocomplete({setSelectedWord}) {
 				console.log(data.length)
 				setFilteredOptions(data)
 			})
-	}
-	useEffect(() => {
-		fetchSuggestions()
 	}, [inputText])
 	return (
 		<>
 			<ClickOutside onClickOutside={hideOptions}>
-				<form onSubmit={(e)=>{e.preventDefault()}} className="relative">
+				<form onSubmit={handleFormSubmit} className="relative">
 					<label htmlFor="inputText" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Enter word</label>
 					<input
 						onFocus={showOptions}
