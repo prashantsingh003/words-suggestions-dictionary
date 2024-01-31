@@ -12,8 +12,8 @@ export function WordCard({ wordData }){
     return meanings.map((meaning,i) => (
       <div key={meaning.partOfSpeech+i} className="mb-4">
         <div className="text-gray-400 mb-2">{meaning.partOfSpeech}</div>
-        {meaning.definitions.map(definition => (
-          <div key={definition.definition} className="mb-2">
+        {meaning.definitions.map((definition,ind) => (
+          <div key={definition.definition+ind} className="mb-2">
             <div className="font-bold">{definition.definition}</div>
             <div className="text-gray-500 mb-2">{definition.example}</div>
           </div>
@@ -37,8 +37,8 @@ export function WordCard({ wordData }){
         <div className="text-gray-400 mb-2">Synonyms:</div>
         <div className="flex flex-wrap">
           {wordData.meanings.map((meaning) =>
-            meaning.synonyms.map(synonym => (
-              <div key={synonym} className="bg-gray-700 text-gray-300 rounded-full px-3 py-1 m-1">
+            meaning.synonyms.map((synonym,i) => (
+              <div key={synonym+i} className="bg-gray-700 text-gray-300 rounded-full px-3 py-1 m-1">
                 {synonym}
               </div>
             ))
@@ -50,8 +50,8 @@ export function WordCard({ wordData }){
         <div className="text-gray-400 mb-2">Antonyms:</div>
         <div className="flex flex-wrap">
           {wordData.meanings.map((meaning) =>
-            meaning.antonyms.map(antonym => (
-              <div key={antonyms} className="bg-gray-700 text-gray-300 rounded-full px-3 py-1 m-1">
+            meaning.antonyms.map((antonym,i) => (
+              <div key={antonym+i} className="bg-gray-700 text-gray-300 rounded-full px-3 py-1 m-1">
                 {antonym}
               </div>
             ))
@@ -64,7 +64,7 @@ export function WordCard({ wordData }){
         <div>
           {wordData.sourceUrls.map((url, index) => (
             <div>
-              <a key={url} href={url} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">
+              <a key={url+index} href={url} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">
                 {url}
               </a>
             </div>

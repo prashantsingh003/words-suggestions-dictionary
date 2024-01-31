@@ -4,18 +4,18 @@ import { getAutocompleteSuggestionAPI } from "../utils/api";
 import axios from "axios";
 import '../styles/autocomplete.scss'
 
-export function Autocomplete({setSelectedWord,onFormSubmit}) {
+export function Autocomplete({setMultipleSelectedWordRes}) {
 	const [optionsVisibility, setOptionsVisibility] = useState(false);
 	const showOptions=()=>setOptionsVisibility(true);
 	const hideOptions=()=>setOptionsVisibility(false);
 
 	const [inputText, setInputText] = useState('');
-	const [trackInputText, setTrackInputText] = useState('');
+	// const [trackInputText, setTrackInputText] = useState('');
 	const [filteredOptions, setFilteredOptions] = useState([]);
 
 	const setInputTextWrapper=(newVal)=>{
 		setInputText((prevVal)=>{
-			setTrackInputText(prevVal);
+			// setTrackInputText(prevVal);
 			return newVal;
 		})
 	}
@@ -23,12 +23,11 @@ export function Autocomplete({setSelectedWord,onFormSubmit}) {
 	const inputLengthMessage=()=> inputText.length>1?<></>:<small>Please enter atleast 2 characters</small>
 	const handleFormSubmit=(e)=>{
 		e.preventDefault();
-		console.log("fomm submit")
-		onFormSubmit(filteredOptions.slice(0,5))
+		setMultipleSelectedWordRes(filteredOptions.slice(0,10))
 	}
 	const handleWordSelect=(item)=>{
 		setInputText(item);
-		setSelectedWord(item);
+		setMultipleSelectedWordRes([item]);
 		hideOptions();
 	}
 	useEffect(() => {
@@ -39,7 +38,6 @@ export function Autocomplete({setSelectedWord,onFormSubmit}) {
 		if(inputText.length>1)
 			axios.get(getAutocompleteSuggestionAPI+inputText)
 			.then(({data})=>{
-				console.log(data.length)
 				setFilteredOptions(data)
 			})
 	}, [inputText])

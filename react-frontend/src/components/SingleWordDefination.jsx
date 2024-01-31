@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
-import { getWordDefinationAPI, API_KEY, API_HOST, upbanDictAPI } from '../utils/api';
+import { getWordDefinationAPI } from '../utils/api';
 import axios from "axios";
-import {WordCard} from "../components";
+import {WordCard} from ".";
 
-export function WordDefination({ word = null }) {
+export function SingleWordDefination({ word = null }) {
 	const [wordData,setWordData]=useState(null);
 	const [error,serError]=useState(false);
 
@@ -31,7 +31,7 @@ export function WordDefination({ word = null }) {
 		meanings=meanings.filter((meaning)=>{
 			if(!set.has(meaning.partOfSpeech)){
 				set.add(meaning.partOfSpeech)
-				meaning.definitions=meaning.definitions.splice(0,3)
+				meaning.definitions=meaning.definitions.splice(0,6)
 				return true
 			}
 			return false
@@ -43,7 +43,6 @@ export function WordDefination({ word = null }) {
 			phonetic,
 			audio
 		}
-		console.log(newWord)
 		setWordData(newWord)
 	}
 	useEffect(() => {
