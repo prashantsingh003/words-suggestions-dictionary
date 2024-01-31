@@ -55,6 +55,6 @@ export function WordDefination({ word = null }) {
 	if(wordData)
 		return <WordCard wordData={wordData}></WordCard>
 	else if(error)
-		return <div>Oops!! Error occured while fetching data</div> 
+		return <div>Oops!! Selected word is not available</div> 
 	return (<></>)
 }
