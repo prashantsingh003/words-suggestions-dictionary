@@ -29,7 +29,10 @@ class Trie:
 			if char not in node.children:
 				return []
 			node = node.children[char]
-		return self.search(node, prefix)
+		return_arr=self.search(node, prefix)
+		if(node.is_end_of_word):
+			return_arr.append(prefix)
+		return return_arr
 	
 	def count_nodes(self,node=None):
 		if( node is None):
